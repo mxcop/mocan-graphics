@@ -2,7 +2,7 @@ import { Circle, makeScene2D, Txt, View2D } from '@motion-canvas/2d';
 import { addLayeredGrid } from '../../functions/grid';
 import { addIntersectionVector, addIntersectionVectorInterval, addInterval, addVector, getIntersectionPoint } from '../../functions/vector';
 import { AABB, LINE_WIDTH, Vec2 } from '../../types';
-import { BLUE, WHITE, YELLOW } from '../../colors';
+import { BLUE, DARK_YELLOW, WHITE, YELLOW } from '../../colors';
 import { addText } from '../../functions/text';
 
 /* Canvas = 640x640 */
@@ -27,6 +27,8 @@ export default makeScene2D(function* (view: View2D) {
         <Txt text={"delta_y"} position={int_y_point} rotation={angle} fill={WHITE} stroke={WHITE} lineJoin={'round'} lineWidth={1} strokeFirst={true} fontFamily={'JetBrains Mono'} fontSize={48} fontWeight={900} />
     );
 
+    addInterval(view, YELLOW, line_width, [-192, 0], [-192, 64]);
+
     /* Delta X */
     addIntersectionVectorInterval(view, WHITE, line_width, point, [1, -0.33], grid_bb, [192, -257], 32);
 
@@ -35,8 +37,8 @@ export default makeScene2D(function* (view: View2D) {
         <Txt text={"delta_x"} position={int_x_point} rotation={angle} fill={WHITE} stroke={WHITE} lineJoin={'round'} lineWidth={1} strokeFirst={true} fontFamily={'JetBrains Mono'} fontSize={48} fontWeight={900} />
     );
 
-    addInterval(view, YELLOW, line_width, [100, 0], [200, 0]);
+    addInterval(view, YELLOW, line_width, [-64, 192], [0, 192]);
 
     /* Ray */
-    addIntersectionVector(view, YELLOW, line_width, point, [1, -0.33], grid_bb);
+    addIntersectionVector(view, DARK_YELLOW, line_width, point, [1, -0.33], grid_bb);
 });
