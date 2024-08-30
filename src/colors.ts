@@ -16,6 +16,8 @@ export const BLUE: Color = "#4dabf7";
 export const DARK_BLUE: Color = "#4f72fc";
 
 export const YELLOW: Color = "#ffc034";
+export const DARK_YELLOW: Color = "#7e4d05";
+
 export const ORANGE: Color = "#f76707";
 
 export const LIGHT_PURPLE: Color = "#e599f7";

@@ -1,6 +1,6 @@
 import { makeScene2D, View2D } from '@motion-canvas/2d';
-import { addLayeredGrid } from '../functions/grid';
 import { LINE_WIDTH } from '../types';
+import { addLayeredGrid } from '../functions/grid';
 import { addIntersectionVector, addVector } from '../functions/vector';
 import { BLUE, YELLOW } from '../colors';
 

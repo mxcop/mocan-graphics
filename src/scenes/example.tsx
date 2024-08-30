@@ -1,8 +1,7 @@
-import { Circle, Grid, makeScene2D, Txt, View2D } from '@motion-canvas/2d';
-import { addCascadedProbe, addProbe } from '../functions/radiance-cascades';
-import { BLACK, BLUE, DARK_BLUE, DARK_GREEN, GRAY, GREEN, RED, WHITE } from '../colors';
+import { Circle, makeScene2D, View2D } from '@motion-canvas/2d';
+import { BLUE, DARK_BLUE, GREEN } from '../colors';
 import { all, createRef } from '@motion-canvas/core';
-import { addLayeredGrid, addSmallGrid } from '../functions/grid';
+import { addLayeredGrid } from '../functions/grid';
 import { LINE_WIDTH } from '../types';
 
 export default makeScene2D(function* (view: View2D) {
