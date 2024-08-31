@@ -16,31 +16,32 @@ export default makeScene2D(function* (view: View2D) {
     );
 
     const point: Vec2 = [0, 32];
-    const vector: Vec2 = normalize([1, 0.8]);
+    const vector: Vec2 = normalize([1, -0.33]);
+    const angle = Math.atan2(vector[1], vector[0]) * 57.2958;
     const grid_bb: AABB = [[-4 * 64, -4 * 64], [4 * 64, 4 * 64]];
 
     const int_cell = createSignal<Vec2>([-64, 0]);
-    const cell_opacity = createSignal(1.0);
+    const cell_opacity = createSignal(0.5);
     view.add(
         <Rect position={int_cell} offset={[-1.0, -1.0]} width={64} height={64} stroke={DARK_BLUE} opacity={cell_opacity} lineWidth={line_width} radius={4} />
     );
 
     /* tmax X */
-    const tmax_xt = createSignal(0.5);
+    const tmax_xt = createSignal(0.4975);
     const tmax_xp = createSignal(() => {
         return getIntersectionPoint(point, vector, grid_bb, tmax_xt(), 0);
     });
     const tmax_xtp = createSignal(() => {
-        return getIntersectionPoint(point, vector, grid_bb, tmax_xt(), 64);
+        return getIntersectionPoint(point, vector, grid_bb, tmax_xt(), 60);
     });
 
     addVectorMarker(view, WHITE, line_width, tmax_xp, vector, 32);
     view.add(
-        <Txt text={"x"} position={tmax_xtp} fill={WHITE} stroke={WHITE} lineJoin={'round'} lineWidth={1} strokeFirst={true} fontFamily={'JetBrains Mono'} fontSize={48} fontWeight={900} />
+        <Txt text={"tmax_x"} position={tmax_xtp} rotation={angle} fill={WHITE} stroke={WHITE} lineJoin={'round'} lineWidth={1} strokeFirst={true} fontFamily={'JetBrains Mono'} fontSize={48} fontWeight={900} />
     );
 
     /* tmax Y */
-    const tmax_yt = createSignal(0.575);
+    const tmax_yt = createSignal(0.685);
     const tmax_yp = createSignal(() => {
         return getIntersectionPoint(point, vector, grid_bb, tmax_yt(), 0);
     });
@@ -50,7 +51,7 @@ export default makeScene2D(function* (view: View2D) {
 
     addVectorMarker(view, WHITE, line_width, tmax_yp, vector, -32);
     view.add(
-        <Txt text={"y"} position={tmax_ytp} fill={WHITE} stroke={WHITE} lineJoin={'round'} lineWidth={1} strokeFirst={true} fontFamily={'JetBrains Mono'} fontSize={48} fontWeight={900} />
+        <Txt text={"tmax_y"} position={tmax_ytp} rotation={angle} fill={WHITE} stroke={WHITE} lineJoin={'round'} lineWidth={1} strokeFirst={true} fontFamily={'JetBrains Mono'} fontSize={48} fontWeight={900} />
     );
 
     /* Ray */
@@ -58,7 +59,7 @@ export default makeScene2D(function* (view: View2D) {
 
     /* Current point & cell */
     const start_point: Vec2 = getIntersectionPoint(point, vector, grid_bb, 0.0, 0);
-    const int_t = createSignal(0.42);
+    const int_t = createSignal(0.375);
     const int_point = createSignal(() => {
         return getIntersectionPoint(point, vector, grid_bb, int_t(), 0);
     });
@@ -76,28 +77,4 @@ export default makeScene2D(function* (view: View2D) {
         <Circle position={int_point} fill={WHITE} size={32.0} />
         </>
     );
-
-    /* Animation */
-    yield int_t(0.5, 2.0); /* Move X */
-    yield* int_cell([0, 0], 2.0);
-    yield* tmax_xt(0.63, 2.0);
-
-    yield int_t(0.575, 2.0); /* Move Y */
-    yield* int_cell([0, 64], 2.0);
-    yield* tmax_yt(0.735, 2.0);
-
-    yield int_t(0.63, 2.0); /* Move X */
-    yield* int_cell([64, 64], 2.0);
-    yield* tmax_xt(0.76, 2.0);
-
-    /* Reset */
-    yield all(
-        tmax_xt(0.5, 2.0),
-        tmax_yt(0.575, 2.0),
-        int_t(0.42, 2.0),
-        cell_opacity(0.0, 1.0)
-    );
-    yield* waitFor(1.0);
-    int_cell([-64, 0]);
-    yield* cell_opacity(1.0, 1.0)
 });
