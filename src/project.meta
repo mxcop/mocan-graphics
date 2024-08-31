@@ -19,7 +19,7 @@
   "rendering": {
     "fps": 60,
     "resolutionScale": 1,
-    "colorSpace": "srgb",
+    "colorSpace": "display-p3",
     "exporter": {
       "name": "@motion-canvas/ffmpeg",
       "options": {

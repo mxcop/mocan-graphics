@@ -1,5 +1,6 @@
 import { Line, PossibleCanvasStyle, Txt, View2D } from "@motion-canvas/2d";
 import { AABB, normalize, Vec2 } from "../types";
+import { createSignal, SignalValue, SimpleSignal, unwrap } from "@motion-canvas/core";
 
 type Color = PossibleCanvasStyle;
 
@@ -23,6 +24,63 @@ const addVector = (view: View2D, color: Color, line_width: number, origin: Vec2,
             lineCap={'round'}
             arrowSize={line_width * 2.0}
             endArrow
+        />,
+    );
+}
+
+/**
+ * Draw a marker at a point on a vector / line.
+ */
+const addVectorMarker = (view: View2D, color: Color, line_width: number, point: SignalValue<Vec2>, vector: Vec2, offset: number = 32) => {
+    const normal: Vec2 = [
+        -vector[1],
+        vector[0]
+    ];
+
+    const center_point = createSignal<Vec2>(() => { 
+        const p = unwrap(point);
+        return [
+            p[0] + normal[0] * offset,
+            p[1] + normal[1] * offset
+        ];
+    });
+
+    view.add(
+        <Line
+            points={[
+                point,
+                center_point
+            ]}
+            stroke={color}
+            lineWidth={line_width}
+            lineCap={'round'}
+        />,
+    );
+
+    const left_point = createSignal<Vec2>(() => { 
+        const p = center_point();
+        return [
+            p[0] - vector[0] * line_width * 1.5,
+            p[1] - vector[1] * line_width * 1.5
+        ];
+    });
+    const right_point = createSignal<Vec2>(() => { 
+        const p = center_point();
+        return [
+            p[0] + vector[0] * line_width * 1.5,
+            p[1] + vector[1] * line_width * 1.5
+        ];
+    });
+
+    view.add(
+        <Line
+            points={[
+                left_point,
+                right_point
+            ]}
+            stroke={color}
+            lineWidth={line_width}
+            lineCap={'round'}
         />,
     );
 }
@@ -247,4 +305,4 @@ const getIntersectionPoint = (origin: Vec2, vector: Vec2, aabb: AABB, time: numb
     return pos;
 }
 
-export { addVector, addInterval, addIntersectionVector, addIntersectionVectorInterval, getIntersectionPoint };
+export { addVector, addVectorMarker, addInterval, addIntersectionVector, addIntersectionVectorInterval, getIntersectionPoint };
