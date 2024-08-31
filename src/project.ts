@@ -8,7 +8,8 @@ import walk from './scenes/grid-traversal/walk?scene';
 import tmax from './scenes/grid-traversal/tmax?scene';
 import entry from './scenes/grid-traversal/entry?scene';
 import angular from './scenes/radiance-cascades/angular?scene';
+import spatial from './scenes/radiance-cascades/spatial?scene';
 
 export default makeProject({
-  scenes: [angular],
+  scenes: [spatial],
 });
