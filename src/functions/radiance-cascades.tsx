@@ -1,5 +1,6 @@
 import { Line, PossibleCanvasStyle, View2D } from "@motion-canvas/2d";
 import { LINE_WIDTH, TAU, Vec2 } from "../types";
+import { createSignal, SignalValue, unwrap } from "@motion-canvas/core";
 
 type Color = PossibleCanvasStyle;
 
@@ -10,18 +11,24 @@ type Color = PossibleCanvasStyle;
  * @param tmin Interval start.
  * @param tmax Interval end.
  */
-const addProbe = (view: View2D, color: Color, origin: Vec2, dir_count: number, tmin: number, tmax: number) => {
+const addProbe = (view: View2D, color: Color, origin: SignalValue<Vec2>, dir_count: number, tmin: number, tmax: number, opacity: SignalValue<number> = 1.0) => {
     for (let i = 0; i < dir_count; i++) {
         const angle = ((i + 0.5) / dir_count) * TAU;
 
-        const start_point: Vec2 = [
-            origin[0] + Math.cos(angle) * tmin, 
-            origin[1] + Math.sin(angle) * tmin
-        ];
-        const end_point: Vec2 = [
-            origin[0] + Math.cos(angle) * (tmax - LINE_WIDTH), 
-            origin[1] + Math.sin(angle) * (tmax - LINE_WIDTH)
-        ];
+        const start_point = createSignal<Vec2>(() => { 
+            const p = unwrap(origin);
+            return [
+                p[0] + Math.cos(angle) * tmin, 
+                p[1] + Math.sin(angle) * tmin
+            ];
+        });
+        const end_point = createSignal<Vec2>(() => { 
+            const p = unwrap(origin);
+            return [
+                p[0] + Math.cos(angle) * (tmax - LINE_WIDTH), 
+                p[1] + Math.sin(angle) * (tmax - LINE_WIDTH)
+            ];
+        });
 
         view.add(
             <Line
@@ -29,6 +36,7 @@ const addProbe = (view: View2D, color: Color, origin: Vec2, dir_count: number, t
                     start_point,
                     end_point
                 ]}
+                opacity={opacity}
                 stroke={color}
                 lineWidth={LINE_WIDTH}
                 lineCap={'round'}

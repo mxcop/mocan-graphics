@@ -21,7 +21,7 @@ export default makeScene2D(function* (view: View2D) {
     const grid_bb: AABB = [[-4 * 64, -4 * 64], [4 * 64, 4 * 64]];
 
     const int_cell = createSignal<Vec2>([-64, 0]);
-    const cell_opacity = createSignal(0.5);
+    const cell_opacity = createSignal(1.0);
     view.add(
         <Rect position={int_cell} offset={[-1.0, -1.0]} width={64} height={64} stroke={DARK_BLUE} opacity={cell_opacity} lineWidth={line_width} radius={4} />
     );
