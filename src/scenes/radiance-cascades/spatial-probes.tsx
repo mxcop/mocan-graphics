@@ -107,14 +107,41 @@ export default makeScene2D(function* (view: View2D) {
             scene={threeScene}
             layout={false}
         />
+        <Line
+            points={[
+                top_point,
+                bottom_point
+            ]}
+            stroke={BLUE}
+            lineWidth={LINE_WIDTH}
+            opacity={.5}
+            lineCap={'round'}
+        /> 
+        <Circle
+            position={top_point}
+            size={24}
+            fill={BLUE}
+            stroke={BLACK}
+            lineWidth={16}
+            strokeFirst={true}
+        />
+        <Circle
+            position={bottom_point}
+            size={24}
+            fill={BLUE}
+            stroke={BLACK}
+            lineWidth={16}
+            strokeFirst={true}
+        />
+        <Txt text={"spacing"} position={mid_point} offsetX={-1.0} opacity={txt_opacity} fill={BLUE} stroke={BLUE} lineJoin={'round'} lineWidth={1} strokeFirst={true} fontFamily={'JetBrains Mono'} fontSize={32} fontWeight={900} />
         </>
     );
 
-    yield* occluder_pos([60.0, 16.0], 2.0);
-    yield* occluder_pos([20.0, 16.0], 2.0);
-    yield* occluder_pos([10.0, 16.0], 2.0);
-    yield* occluder_pos([20.0, 16.0], 2.0);
-    // yield* light_radius(24.0, 2.0);
-    // yield* light_radius(6.0, 2.0);
-    // yield* light_radius(12.0, 2.0);
+    yield* dist(32.0, 2.0);
+    yield txt_opacity(1.0, 2.0);
+    yield* dist(64.0, 2.0);
+    yield* dist(128.0, 2.0);
+    yield* dist(256.0, 2.0);
+    yield txt_opacity(0.0, 2.0);
+    yield* dist(0.0, 2.0);
 });

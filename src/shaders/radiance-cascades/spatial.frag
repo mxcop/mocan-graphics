@@ -1,4 +1,6 @@
 uniform int dir_count;
+uniform vec2 occluder_pos;
+uniform float light_radius;
 uniform vec2 size;
 
 in vec2 tuv;
@@ -43,8 +45,8 @@ void main() {
         vec2 rd = vec2(cos(angle), sin(angle));
 
         /* Detect hit */
-        float light_dist = aabb_intersect(ro, rd, LIGHT_POS - vec2(THICKNESS, LIGHT_RADIUS), LIGHT_POS + vec2(THICKNESS, LIGHT_RADIUS));
-        float occluder_dist = aabb_intersect(ro, rd, OCCLUDER_POS - vec2(THICKNESS, OCCLUDER_RADIUS), OCCLUDER_POS + vec2(THICKNESS, OCCLUDER_RADIUS));
+        float light_dist = aabb_intersect(ro, rd, LIGHT_POS - vec2(THICKNESS, light_radius), LIGHT_POS + vec2(THICKNESS, light_radius));
+        float occluder_dist = aabb_intersect(ro, rd, occluder_pos - vec2(THICKNESS, OCCLUDER_RADIUS), occluder_pos + vec2(THICKNESS, OCCLUDER_RADIUS));
 
         /* Inside occluder */ 
         if (occluder_dist == 0.0) {
