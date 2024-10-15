@@ -9,7 +9,13 @@ import tmax from './scenes/grid-traversal/tmax?scene';
 import entry from './scenes/grid-traversal/entry?scene';
 import angular from './scenes/radiance-cascades/angular?scene';
 import spatial from './scenes/radiance-cascades/spatial?scene';
+import split from './scenes/radiance-cascades/split?scene';
+import incsplit from './scenes/radiance-cascades/inc-split?scene';
+import expspatial from './scenes/radiance-cascades/exploit-spatial?scene';
+import cascade from './scenes/radiance-cascades/cascade?scene';
+import cascademem from './scenes/radiance-cascades/cascade-mem?scene';
+import cascadeprobe from './scenes/radiance-cascades/cascade-probe?scene';
 
 export default makeProject({
-  scenes: [spatial],
+  scenes: [cascademem],
 });

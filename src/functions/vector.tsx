@@ -7,17 +7,21 @@ type Color = PossibleCanvasStyle;
 /**
  * Draw a vector with an arrow.
  */
-const addVector = (view: View2D, color: Color, line_width: number, origin: Vec2, vector: Vec2, length: number) => {
-    const end_point: Vec2 = [
-        origin[0] + vector[0] * length,
-        origin[1] + vector[1] * length
-    ];
+const addVector = (view: View2D, color: Color, line_width: number, origin: Vec2, vector: SignalValue<Vec2>, length: number) => {
+
+    const end_point = createSignal<Vec2>(() => { 
+        const p = unwrap(vector);
+        return [
+            origin[0] + p[0] * length,
+            origin[1] + p[1] * length
+        ];
+    });
 
     view.add(
         <Line
-            points={[
+            points={() => [
                 origin,
-                end_point
+                end_point()
             ]}
             stroke={color}
             lineWidth={line_width}
