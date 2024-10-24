@@ -15,7 +15,12 @@ import expspatial from './scenes/radiance-cascades/exploit-spatial?scene';
 import cascade from './scenes/radiance-cascades/cascade?scene';
 import cascademem from './scenes/radiance-cascades/cascade-mem?scene';
 import cascadeprobe from './scenes/radiance-cascades/cascade-probe?scene';
+import mergeintervals from './scenes/radiance-cascades/merge-intervals?scene';
+import mergecones from './scenes/radiance-cascades/merge-cones?scene';
+import mergespatial from './scenes/radiance-cascades/merge-spatial?scene';
+import cascadecrown from './scenes/radiance-cascades/cascade-crown?scene';
+import mergecombined from './scenes/radiance-cascades/merge-combined?scene';
 
 export default makeProject({
-  scenes: [cascademem],
+  scenes: [mergecombined],
 });

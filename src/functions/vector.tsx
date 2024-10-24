@@ -33,6 +33,71 @@ const addVector = (view: View2D, color: Color, line_width: number, origin: Vec2,
 }
 
 /**
+ * Draw a line from A to B with lines indicating the ends.
+ */
+const addIndicatorLine = (view: View2D, color: Color, line_width: number, a: Vec2, b: Vec2, offset: number, opacity: SignalValue<number> = 1.0) => {
+    const vector: Vec2 = normalize([
+        b[0] - a[0],
+        b[1] - a[1]
+    ]);
+
+    const normal: Vec2 = [
+        -vector[1],
+        vector[0]
+    ];
+
+    const start_point: Vec2 = a;
+    const end_point: Vec2 = b;
+    
+    const start_offset_point: Vec2 = [
+        start_point[0] + normal[0] * offset,
+        start_point[1] + normal[1] * offset
+    ];
+    const end_offset_point: Vec2 = [
+        end_point[0] + normal[0] * offset,
+        end_point[1] + normal[1] * offset
+    ];
+
+    view.add(
+        <Line
+            points={[
+                start_offset_point,
+                end_offset_point
+            ]}
+            stroke={color}
+            opacity={opacity}
+            lineWidth={line_width}
+            lineCap={'round'}
+        />,
+    );
+
+    view.add(
+        <Line
+            points={[
+                start_point,
+                start_offset_point
+            ]}
+            stroke={color}
+            opacity={opacity}
+            lineWidth={line_width}
+            lineCap={'round'}
+        />,
+    );
+    view.add(
+        <Line
+            points={[
+                end_point,
+                end_offset_point
+            ]}
+            stroke={color}
+            opacity={opacity}
+            lineWidth={line_width}
+            lineCap={'round'}
+        />,
+    );
+}
+
+/**
  * Draw a marker at a point on a vector / line.
  */
 const addVectorMarker = (view: View2D, color: Color, line_width: number, point: SignalValue<Vec2>, vector: Vec2, offset: number = 32) => {
@@ -309,4 +374,4 @@ const getIntersectionPoint = (origin: Vec2, vector: Vec2, aabb: AABB, time: numb
     return pos;
 }
 
-export { addVector, addVectorMarker, addInterval, addIntersectionVector, addIntersectionVectorInterval, getIntersectionPoint };
+export { addVector, addIndicatorLine, addVectorMarker, addInterval, addIntersectionVector, addIntersectionVectorInterval, getIntersectionPoint };

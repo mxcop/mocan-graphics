@@ -80,6 +80,86 @@ const addForkedProbe = (view: View2D, color: Color, origin: Vec2, dir_count: num
     }
 }
 
+/**
+ * Add a probe to the view with a highlight on some intervals.
+ * @param origin Center point of the probe.
+ * @param dir_count Number of directions/intervals to draw.
+ * @param tmin Interval start.
+ * @param tmax Interval end.
+ * @param highlight_range Range of intervals to highlight.
+ */
+const addProbeHighlighted = (view: View2D, color: Color, muted: Color, origin: SignalValue<Vec2>, dir_count: number, tmin: number, tmax: number, highlight_range: Vec2, highlight_arrow: boolean = false, opacity: SignalValue<number> = 1.0) => {
+    for (let i = 0; i < dir_count; i++) {
+        if (i >= highlight_range[0] && i <= highlight_range[1]) continue;
+
+        const angle = ((i + 0.5) / dir_count) * TAU;
+
+        const start_point = createSignal<Vec2>(() => { 
+            const p = unwrap(origin);
+            return [
+                p[0] + Math.cos(angle) * tmin, 
+                p[1] + Math.sin(angle) * tmin
+            ];
+        });
+        const end_point = createSignal<Vec2>(() => { 
+            const p = unwrap(origin);
+            return [
+                p[0] + Math.cos(angle) * (tmax - LINE_WIDTH), 
+                p[1] + Math.sin(angle) * (tmax - LINE_WIDTH)
+            ];
+        });
+
+        view.add(
+            <Line
+                points={[
+                    start_point,
+                    end_point
+                ]}
+                opacity={opacity}
+                stroke={muted}
+                lineWidth={LINE_WIDTH}
+                lineCap={'round'}
+            />,
+        );
+    }
+
+    for (let i = 0; i < dir_count; i++) {
+        if (i < highlight_range[0] || i > highlight_range[1]) continue;
+
+        const angle = ((i + 0.5) / dir_count) * TAU;
+
+        const start_point = createSignal<Vec2>(() => { 
+            const p = unwrap(origin);
+            return [
+                p[0] + Math.cos(angle) * tmin, 
+                p[1] + Math.sin(angle) * tmin
+            ];
+        });
+        let dist = highlight_arrow ? tmax : tmax - LINE_WIDTH;
+        const end_point = createSignal<Vec2>(() => { 
+            const p = unwrap(origin);
+            return [
+                p[0] + Math.cos(angle) * dist, 
+                p[1] + Math.sin(angle) * dist
+            ];
+        });
+
+        view.add(
+            <Line
+                points={[
+                    start_point,
+                    end_point
+                ]}
+                opacity={opacity}
+                stroke={color}
+                lineWidth={LINE_WIDTH}
+                lineCap={'round'}
+                endArrow={highlight_arrow}
+            />,
+        );
+    }
+}
+
 export interface Cascades {
     /** Number of cascades. */
     count: number;
@@ -116,4 +196,4 @@ const addCascadedProbe = (view: View2D, origin: Vec2, cascades: Cascades) => {
     }
 }
 
-export { addProbe, addForkedProbe, addCascadedProbe };
+export { addProbe, addForkedProbe, addProbeHighlighted, addCascadedProbe };
